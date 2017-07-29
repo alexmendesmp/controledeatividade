@@ -1,0 +1,19 @@
+{
+    "name": "alexmendes/controledeatividade",
+    "description": "Projeto controle de Atividades",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alex Mendes",
+            "email": "alex@managerprojects.com.br"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "require": {
+    }
+}
