@@ -55,9 +55,12 @@ class ModelLib
             // ..
             $fields = $params;
         }
+        // Where Condition?
+        
         $query = "SELECT {$fields} FROM {$this->table}";
         $prepare = $this->db->prepare( $query );
         $prepare->execute();
+        // Fetch Results
         $result = $prepare->fetchAll( \PDO::FETCH_ASSOC );
         // Do all relations
         $this->doRelations( $result );
@@ -66,6 +69,12 @@ class ModelLib
         
         return $result;
     }
+    /**
+     * 
+     * @param int $id
+     * @param string $params
+     * @return type
+     */
     public function find( int $id, string $params = null )
     {
         // Before Find.
@@ -80,12 +89,57 @@ class ModelLib
         $prepare = $this->db->prepare( $query );
         $prepare->bindValue( ':id', $id );
         $prepare->execute();
+        // Fetch result
         $result = $prepare->fetch( \PDO::FETCH_ASSOC );
+        // Do all relations
+        $this->doRelations( $result );
         
         $result = $this->afterFind( $result );
         
         return $result;
     }
+    public function execute()
+    {
+
+        // Before Find.
+//        $params = $this->beforeFind( $params );
+//        
+        $fields = '*';
+        if ( $this->select ) {
+            // ..
+            $fields = $this->select;
+        }
+//        
+//        
+//
+//        if ( $this->where ) {
+//            // ..
+//            return null;
+//        }
+        $conditions = null;
+        foreach ( $this->where as $logical => $wheres ) {
+            // ..
+            foreach ( $wheres as $where ) {
+                // ..
+                $conditions .= "{$logical} {$where[0]} {$where[1]} :{$where[0]}";
+                $query = "SELECT {$fields} FROM {$this->table} WHERE 1 {$conditions}";
+
+                $prepare = $this->db->prepare( $query );
+                $prepare->bindValue( ":$where[0]", $where[2] );
+            }
+        }
+        
+        $prepare->execute();
+        // Fetch result
+        $result = $prepare->fetchAll( \PDO::FETCH_ASSOC );
+        // Do all relations
+        $this->doRelations( $result );
+        
+        $result = $this->afterFind( $result );
+        
+        return $result;
+    }
+    
     public function save()
     {
         return;
@@ -123,7 +177,12 @@ class ModelLib
      */
     public function where( array $param )
     {
-        array_push( $this->where, $param );
+        if ( isset( $this->where['AND'] ) ) {
+            // ..
+            $this->where['AND'] = array_merge( $this->where['AND'], [$param] );
+        }
+        
+        $this->where = array_merge( $this->where, ['AND' => [$param]] );
         
         return $this;
     }
@@ -157,11 +216,18 @@ class ModelLib
             // 0 = class name
             // 1 = fk
             // 2 = local reference to fk
+            if ( ! @is_array( $results[0] ) ) {
+                // It is not a collection of arrays
+                // but a single result
+                $s = new $relation[0]; // class
+                $related = $s->find( $results[$relation[2]] ); // fk
+                $results[$relation[2]] = $related; //fk
+                continue;
+            }
             foreach ( $results as $key => $item ) {
                 // ..
                 $s = new $relation[0]; // class
                 $related = $s->find( $item[$relation[2]] ); // fk
-//                $item[$relation[2]] = $related; //fk
                 $results[$key][$relation[2]] = $related; //fk
             }
         }        

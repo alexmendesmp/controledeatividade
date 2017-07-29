@@ -11,12 +11,14 @@ class ActivityController extends Controller
     
     public function index()
     {
-        $res = (new Activity())->getActivityList();
+        $res = (new Activity())->getActivity(1);
         
         if ( $res ) {
             Rest::response( $res, 200 );
+            return;
         }
         Rest::response( null, 204 );
+        return;
     }
     public function show()
     {
