@@ -5,9 +5,7 @@ namespace App\Ams\Core\Lib;
 class MainController 
 {
     protected $server;
-    protected $currentRoute;
     protected $httpMethod;
-    
     protected $currentController;
     protected $currentAction;
     protected $currentParams;
@@ -16,7 +14,11 @@ class MainController
     {
         $this->server = $_SERVER;
     }
-    
+    /**
+     * Call current Controller Action
+     * 
+     * @return
+     */
     public function callControllerAction()
     {
         $classController = '\\App\\Controllers\\' . $this->currentController;
@@ -29,13 +31,14 @@ class MainController
         }
         $controller->$action();
     }
-    
+    /**
+     * Configure Current Route, Controller and Action
+     */
     public function getCurrentRoute()
     {
         $httpMethod = $this->server['REQUEST_METHOD'];
         $routes = Route::getRouteCollection()[$httpMethod];
         $pathInfo = $this->server['PATH_INFO'];
-        
         
         foreach ( $routes as $route => $controllerAction ) {
             // ..
