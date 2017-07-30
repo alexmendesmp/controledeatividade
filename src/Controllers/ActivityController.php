@@ -11,7 +11,7 @@ class ActivityController extends Controller
     
     public function index()
     {
-        $res = (new Activity())->getActivity(1);
+        $res = (new Activity())->getActivityList();
         
         if ( $res ) {
             Rest::response( $res, 200 );
@@ -20,13 +20,25 @@ class ActivityController extends Controller
         Rest::response( null, 204 );
         return;
     }
-    public function show()
+    /**
+     * 
+     * @param type $id
+     * @return type
+     */
+    public function show( $id )
     {
+        $res = (new Activity())->getActivity( $id );
         
+        if ( $res ) {
+            Rest::response( $res, 200 );
+            return;
+        }
+        Rest::response( null, 204 );
+        return;
     }
     public function save()
     {
-        
+        return;
     }
     public function update()
     {

@@ -98,6 +98,11 @@ class ModelLib
         
         return $result;
     }
+    /**
+     * Execute 'QueryBuilder'
+     * 
+     * @return type
+     */
     public function execute()
     {
 
@@ -109,13 +114,7 @@ class ModelLib
             // ..
             $fields = $this->select;
         }
-//        
-//        
-//
-//        if ( $this->where ) {
-//            // ..
-//            return null;
-//        }
+        
         $conditions = null;
         foreach ( $this->where as $logical => $wheres ) {
             // ..
@@ -132,6 +131,9 @@ class ModelLib
         $prepare->execute();
         // Fetch result
         $result = $prepare->fetchAll( \PDO::FETCH_ASSOC );
+        if ( ! $result ) 
+            return;
+        
         // Do all relations
         $this->doRelations( $result );
         

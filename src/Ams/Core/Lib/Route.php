@@ -16,9 +16,14 @@ class Route
         $controllerAction = self::getControllerAction( $controllerAction );
         if ( $regx ) {
             // ..
-            static::$ROUTE_COLLECTION = array_merge( 
-                    static::$ROUTE_COLLECTION, [$regx => $controllerAction] 
-            );
+            if ( isset( static::$ROUTE_COLLECTION[$httpMethod] ) ) {
+                // ..
+                static::$ROUTE_COLLECTION[$httpMethod] = array_merge( static::$ROUTE_COLLECTION[$httpMethod], [$regx => $controllerAction] );
+                
+            } else {
+                // ..
+                static::$ROUTE_COLLECTION = array_merge( static::$ROUTE_COLLECTION, [$httpMethod => [$regx => $controllerAction]] );
+            }
         }
     }
     /**

@@ -18,8 +18,8 @@ class Activity extends Model
     public function getActivity( int $id, $params = null )
     {
 //        return Activity::with(['status'])->find( $id, $params );
-        return Activity::where(['status', '=', 3])
-                ->select( 'description' )
+        return Activity::with(['status'])
+                ->where([ 'id', '=', $id ])
                 ->execute();
     }
     /**
