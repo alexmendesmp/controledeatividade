@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Ams\Core\Lib\Rest;
 use App\Controllers\Controller;
 use App\Models\Activity;
+use App\Ams\Core\Lib\Request;
 
 class ActivityController extends Controller 
 {
@@ -41,17 +42,43 @@ class ActivityController extends Controller
         Rest::response( null, 204 );
         return;
     }
+    /**
+     * 
+     * @return type
+     */
     public function save()
     {
-        return Rest::response( ['message'=>'save'], 200 );
+        $request = Request::getAll();
+        $saved = (new Activity)->saveActivity( $request );
+        if ( $saved ) {
+            return Rest::response( $saved, 201 );
+        }
+        return Rest::response( [], 400 );
     }
-    public function update()
+    /**
+     * 
+     * @param type $id
+     * @return
+     */
+    public function update( $id )
     {
-        return Rest::response( ['message'=>'update'], 200 );
+        $request = Request::getAll();
+        $updated = (new Activity)->updateActivity( $id, $request );
+        
+        if ( $updated ) {
+            return Rest::response( $updated, 200 );
+        }
+        return Rest::response( [], 400 );
     }
-    public function delete()
+    /**
+     * 
+     * @param type $id
+     * @return
+     */
+    public function delete( $id )
     {
-        return Rest::response( ['message'=>'delete'], 200 );
+        (new Activity)->deleteActivity( $id );
+        return Rest::response( [], 200 );
     }
     
     

@@ -26,6 +26,11 @@ class ModelLib
      * @var DB
      */
     private $db;
+    /**
+     *
+     * @var array
+     */
+    protected $required;
     
     protected $relations = [];
     private $with;
@@ -105,10 +110,6 @@ class ModelLib
      */
     public function execute()
     {
-
-        // Before Find.
-//        $params = $this->beforeFind( $params );
-//        
         $fields = '*';
         if ( $this->select ) {
             // ..
@@ -141,9 +142,91 @@ class ModelLib
         
         return $result;
     }
-    
-    public function save()
+    /**
+     * Save 
+     * 
+     * @param array $postData
+     * @return
+     */
+    public function save( array $postData )
     {
+        // Do Before Save
+        $postData = $this->beforeSave( $postData );
+        try {
+            $fields = "(NAME,DESCRIPTION,START_DATE,END_DATE,STATUS,STATE)";
+            $values = "(:name,:description,:start_date,:end_date,:status,:state)";
+            $query = "INSERT INTO {$this->table} {$fields} VALUES {$values}";
+            $prepare = $this->db->prepare( $query );
+            $prepare->execute([
+                ':name'         => $postData['name'],
+                ':description'  => $postData['description'],
+                ':start_date'   => $postData['start_date'],
+                ':end_date'     => $postData['end_date'],
+                ':status'       => $postData['status'],
+                ':state'        => $postData['state']
+            ]);
+            if ( $this->db->lastInsertId() ) {
+                // ..
+                $newlyRecorded = $this->find( $this->db->lastInsertId() );
+                return $newlyRecorded;
+            }
+        } catch ( \PDOException $ex ) {
+            
+            die( $ex->getMessage() );
+        }
+        return;
+    }
+    /**
+     * Update
+     * 
+     * @param array $postData
+     * @return
+     */
+    public function update( int $id, array $postData )
+    {
+        // Do Before Save
+        $postData = $this->beforeSave( $postData );
+        try {
+            $fields = "NAME=:name,DESCRIPTION=:description,START_DATE=:start_date,END_DATE=:end_date,STATUS=:status,STATE=:state";
+            $query = "UPDATE {$this->table} SET {$fields} WHERE id = :id";
+            $prepare = $this->db->prepare( $query );
+            $prepare->execute([
+                ':id'           => $id,
+                ':name'         => $postData['name'],
+                ':description'  => $postData['description'],
+                ':start_date'   => $postData['start_date'],
+                ':end_date'     => $postData['end_date'],
+                ':status'       => $postData['status'],
+                ':state'        => $postData['state']
+            ]);
+            $updatedRecorded = $this->find( $id );
+            return $updatedRecorded;
+            
+        } catch ( \PDOException $ex ) {
+            
+            die( $ex->getMessage() );
+        }
+        return;
+    }
+    /**
+     * Delete
+     * 
+     * @param int $id
+     * @return
+     */
+    public function delete( int $id )
+    {
+        try {
+            $query = "DELETE FROM {$this->table} WHERE id = :id";
+            $prepare = $this->db->prepare( $query );
+            $prepare->execute([':id' => $id ]);
+            
+            return;
+            
+        } catch ( \PDOException $ex ) {
+            
+            die( $ex->getMessage() );
+        }
         return;
     }
     /**
@@ -227,12 +310,22 @@ class ModelLib
                 continue;
             }
             foreach ( $results as $key => $item ) {
-                // ..
+                // It is a collection
+                // So, iterate
                 $s = new $relation[0]; // class
                 $related = $s->find( $item[$relation[2]] ); // fk
                 $results[$key][$relation[2]] = $related; //fk
             }
         }        
+    }
+    /**
+     * Return required fields
+     * 
+     * @return array
+     */
+    public function getRequiredFields() : array
+    {
+        return $this->required;
     }
 
     public function beforeFind( $params )
@@ -240,6 +333,14 @@ class ModelLib
         return $params;
     }
     public function afterFind( $result )
+    {
+        return $result;
+    }
+    public function beforeSave( $params )
+    {
+        return $params;
+    }
+    public function afterSave( $result )
     {
         return $result;
     }

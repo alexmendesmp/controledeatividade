@@ -20,6 +20,7 @@ class DbConnection
                 $config['PASSWORD'], 
                 array( \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES {$config['CHARSET']}" ) 
         );
+        $this->dbConnection->setAttribute( \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION );                
     }
 
     public static function getInstance()
