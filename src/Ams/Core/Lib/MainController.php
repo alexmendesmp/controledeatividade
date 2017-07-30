@@ -22,7 +22,12 @@ class MainController
         $classController = '\\App\\Controllers\\' . $this->currentController;
         $controller = new $classController();
         $action = $this->currentAction;
-        $controller->$action(...$this->currentParams);
+        if ( $this->currentParams ) {
+            // ..
+            $controller->$action(...$this->currentParams);
+            return;
+        }
+        $controller->$action();
     }
     
     public function getCurrentRoute()
@@ -46,7 +51,8 @@ class MainController
                 // ..
                 $this->currentController = $controllerAction['controller'];
                 $this->currentAction = $controllerAction['action'];
-                $this->currentParams = [$matches[1]];
+                $this->currentParams = (isset( $matches[1] )) ? [$matches[1]] : null;
+                break;
             }
         }
         

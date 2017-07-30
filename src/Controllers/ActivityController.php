@@ -8,7 +8,11 @@ use App\Models\Activity;
 
 class ActivityController extends Controller 
 {
-    
+    /**
+     * List All Activity
+     * 
+     * @return type
+     */
     public function index()
     {
         $res = (new Activity())->getActivityList();
@@ -21,6 +25,7 @@ class ActivityController extends Controller
         return;
     }
     /**
+     * Show Activity by ID
      * 
      * @param type $id
      * @return type
@@ -38,15 +43,15 @@ class ActivityController extends Controller
     }
     public function save()
     {
-        return;
+        return Rest::response( ['message'=>'save'], 200 );
     }
     public function update()
     {
-        
+        return Rest::response( ['message'=>'update'], 200 );
     }
     public function delete()
     {
-        
+        return Rest::response( ['message'=>'delete'], 200 );
     }
     
     
