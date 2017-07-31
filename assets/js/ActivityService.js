@@ -28,9 +28,9 @@ var ActivityService = function()
 
             HttpService().request( 'activity/' + id, 'GET', callBack );
         },
-        getStatus: function( id, callBack ) {
+        getStatus: function( callBack ) {
 
-            HttpService().request( 'activity/' + id, 'GET', callBack );
+            HttpService().request( 'status', 'GET', callBack );
         }
     }
 }
@@ -40,6 +40,7 @@ var HttpService = function( data )
 {
     // validate data content
     data = ( data === 'undefined' ) ? null : JSON.stringify( data );
+    var response;
     return {
         request: function( service, httpMethod, callBack ) {
             // Request

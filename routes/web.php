@@ -9,3 +9,5 @@ Route::set( 'activity' , 'ActivityController@save', 'POST' );
 Route::set( 'activity/:id' , 'ActivityController@show', 'GET' );
 Route::set( 'activity/:id' , 'ActivityController@delete', 'DELETE' );
 Route::set( 'activity/:id' , 'ActivityController@update', 'PUT' );
+
+Route::set( 'status' , 'ActivityController@getStatus', 'GET' );

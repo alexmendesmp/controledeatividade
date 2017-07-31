@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Ams\Core\Lib\Rest;
 use App\Controllers\Controller;
 use App\Models\Activity;
+use App\Models\Status;
 use App\Ams\Core\Lib\Request;
 use App\Views\View;
 
@@ -94,5 +95,14 @@ class ActivityController extends Controller
         return Rest::response( [], 400, 'Erro ao deletar atividade.' );
     }
     
+    public function getStatus()
+    {
+        $status = (new Status)->getStatusList();
+        if ( $status ) {
+            //..
+            return Rest::response( $status, 200 );
+        }
+        return Rest::response( [], 204, 'Nenhum status encontrado.' );
+    }
     
 }

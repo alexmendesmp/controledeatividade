@@ -41,24 +41,24 @@
 
                     <div class="uk-grid">
                         <div class="uk-width-1-1">
-                            <input type="text" placeholder="" class="uk-width-1-1" id="name" required>
+                            <input type="text" placeholder="" class="uk-width-1-1" id="name">
                         </div>
                         <div class="uk-margin uk-width-1-2">
-                            <input class="uk-margin uk-width-1-1" data-uk-datepicker="{format:'YYYY-MM-DD'}" type="text" placeholder="Data de início" id='start_date'>
+                            <input class="uk-margin uk-width-1-1" data-uk-datepicker="{format:'DD/MM/YYYY'}" type="text" placeholder="Data de início" id='start_date'>
                         </div>
                         <div class="uk-margin uk-width-1-2">
-                            <input class="uk-margin uk-width-1-1" data-uk-datepicker="{format:'YYYY-MM-DD'}" type="text" placeholder="Data de finalização" id='end_date'>
+                            <input class="uk-margin uk-width-1-1" data-uk-datepicker="{format:'DD/MM/YYYY'}" type="text" placeholder="Data de finalização" id='end_date'>
                         </div>
                         <div class="uk-margin uk-width-1-1">
                             <textarea class="uk-textarea uk-width-1-1" rows="5" placeholder="Textarea" id='description'></textarea>
                         </div>
                         <div class="uk-margin uk-width-1-2">
                             <select class="uk-select uk-width-1-1" id='status'>
-                                <option value="">Status...</option>
+<!--                                <option value="">Status...</option>
                                 <option value="1">Pendente</option>
                                 <option value="2">Em desenvolvimento</option>
                                 <option value="3">Em teste</option>
-                                <option value="4">Concluída</option>
+                                <option value="4">Concluída</option>-->
                             </select>
                         </div>                            
                         <div class="uk-margin uk-width-1-2">
@@ -85,7 +85,7 @@
         <script src='assets/js/uikitv2/js/uikit.min.js'></script>
         <script src='assets/js/uikitv2/js/components/datepicker.min.js'></script>
         <script src='assets/js/uikitv2/js/components/notify.min.js'></script>
-        <script src='assets/js/BuildList.js'></script>
+        <script src='assets/js/Helper.js'></script>
         <script src='assets/js/MessagesHandler.js'></script>
         <script src='assets/js/ActivityService.js'></script>
         <script src='assets/js/main.js'></script>

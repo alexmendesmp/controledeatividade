@@ -92,6 +92,58 @@ jQuery(document).ready( function( $ ){
         $("#description").val( d['description'] );
         $("#start_date").val( d['start_date'] );
         $("#end_date").val( d['end_date'] );
+        // Temp
+        $globals.statusId = d['status']['id'];
+        $globals.stateId = d['state'];
+        
+        var statusList = ActivityService().getStatus(function( response ){
+            
+            var options = response['data'];
+            var selectStatus = $("#status");
+            $globals.itemSelected = '';
+            selectStatus.html("");
+            selectStatus.append( $("<option/>").html("Status...") );
+            // STATUS OPTIONS //
+            $.map( options, function( option ){
+                $globals.itemSelected = '';
+                // Select stored option
+                if ( parseInt($globals.statusId) == parseInt(option['id']) ) {
+                    $globals.itemSelected = 'SELECTED';
+                }
+                // Build options list
+                selectStatus.append( 
+                        $("<option "+$globals.itemSelected+" value='"+option['id']+"'></option>")
+                            .html( option['description'] )
+                        );
+            });
+            delete $globals.itemSelected;
+            delete $globals.statusId;
+            
+            // STATE OPTIONS //
+            $globals.itemSelected = '';
+            var states = [
+                { 'id': 1, 'description': 'Ativo' },
+                { 'id': 0, 'description': 'Inativo' }
+            ];
+            var selectState = $("#state");
+            selectState.html("");
+            selectState.append( $("<option/>").html("Situação...") );
+            $.map( states, function( state ){
+                $globals.itemSelected = '';
+                // Select stored option
+                if ( parseInt($globals.stateId) == parseInt(state['id']) ) {
+                    $globals.itemSelected = 'SELECTED';
+                }
+                // Build options list
+                selectState.append( 
+                        $("<option "+$globals.itemSelected+" value='"+state['id']+"'></option>")
+                            .html( state['description'] )
+                        );
+            });
+            delete $globals.itemSelected;
+            delete $globals.stateId;
+        });
+        
         // Set Current Edit ID
         $globals.currentEdit_ID = d['id'];
         // Open Modal
@@ -116,8 +168,9 @@ jQuery(document).ready( function( $ ){
         $("#description").val('');
         $("#start_date").val('');
         $("#end_date").val('');
+        $("#status").val('');
+        $("#state").val('');
     }
-    
     
     
     

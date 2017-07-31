@@ -5,6 +5,10 @@ var Helper = {
     // Activities List Builder
     buildActivitiesList: function( list ) {
         // ..
+        if ( list == undefined ) {
+            var list = {};
+            list.data = null;
+        }
         var state = {1: 'Ativo', 0: 'Inativo'};
         var data = list.data;
         var activityList = $("#activityList");
@@ -30,7 +34,6 @@ var Helper = {
             if ( status == STATUS_DONE ) {                
                 bgcolor = "#FFEEEE";
             }
-            console.log( bgcolor );
             // create element
             var tr = $("<tr/>", {bgcolor});
             tr.append( $("<td/>").html(item['id']) );

@@ -121,19 +121,25 @@ class ModelLib
         }
         
         $conditions = null;
+        $arrayBindConditions = [];
         foreach ( $this->where as $logical => $wheres ) {
             // ..
             foreach ( $wheres as $where ) {
                 // ..
                 $conditions .= "{$logical} {$where[0]} {$where[1]} :{$where[0]}";
-                $query = "SELECT {$fields} FROM {$this->table} WHERE 1 {$conditions} $param";
-
-                $prepare = $this->db->prepare( $query );
-                $prepare->bindValue( ":$where[0]", $where[2] );
+                $arrayBindConditions = array_merge( $arrayBindConditions, [":$where[0]" => $where[2]] );
             }
         }
+        $query = "SELECT {$fields} FROM {$this->table} WHERE 1 {$conditions} $param";
+
+        $prepare = $this->db->prepare( $query );
+        // Is there any conditions to bind?
+//        if ( $arrayBindConditions ) {
+//            // Bind Conditions
+//            $prepare->bindValue( $arrayBindConditions );
+//        }
         
-        $prepare->execute();
+        $prepare->execute( $arrayBindConditions );
         // Fetch result
         if ( $first ) $result = $prepare->fetch( \PDO::FETCH_ASSOC );
             else $result = $prepare->fetchAll( \PDO::FETCH_ASSOC );
@@ -166,8 +172,8 @@ class ModelLib
             $prepare->execute([
                 ':name'         => $postData['name'],
                 ':description'  => $postData['description'],
-                ':start_date'   => $postData['start_date'],
-                ':end_date'     => ( ! empty( $postData['end_date'] ) ) ? $postData['end_date'] : null,
+                ':start_date'   => $this->parseDate( $postData['start_date'] ),
+                ':end_date'     => ( ! empty( $postData['end_date'] ) ) ? $this->parseDate( $postData['end_date'] ) : null,
                 ':status'       => $postData['status'],
                 ':state'        => $postData['state']
             ]);
@@ -200,8 +206,8 @@ class ModelLib
                 ':id'           => $id,
                 ':name'         => $postData['name'],
                 ':description'  => $postData['description'],
-                ':start_date'   => $postData['start_date'],
-                ':end_date'     => ( ! empty( $postData['end_date'] ) ) ? $postData['end_date'] : null,
+                ':start_date'   => $this->parseDate( $postData['start_date'] ),
+                ':end_date'     => ( ! empty( $postData['end_date'] ) ) ? $this->parseDate( $postData['end_date'] ) : null,
                 ':status'       => $postData['status'],
                 ':state'        => $postData['state']
             ]);
@@ -325,6 +331,17 @@ class ModelLib
                 $results[$key][$relation[2]] = $related; //fk
             }
         }        
+    }
+    /**
+     * Parse date from DD-MM-YYYY to YYYY-MM-DD
+     * 
+     * @param string $date
+     * @return string
+     */
+    public function parseDate( string $date ) : string
+    {
+        list( $d, $m, $y ) = explode( '/', $date );
+        return "{$y}-{$m}-{$d}";
     }
     /**
      * Return required fields
