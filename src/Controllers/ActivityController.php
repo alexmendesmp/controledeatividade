@@ -6,9 +6,15 @@ use App\Ams\Core\Lib\Rest;
 use App\Controllers\Controller;
 use App\Models\Activity;
 use App\Ams\Core\Lib\Request;
+use App\Views\View;
 
 class ActivityController extends Controller 
 {
+    public function main() 
+    {
+        $data = (new Activity)->getActivityList();
+        (new View)->render( 'main', $data );
+    }
     /**
      * List All Activity
      * 
@@ -68,7 +74,7 @@ class ActivityController extends Controller
         if ( $updated ) {
             return Rest::response( $updated, 200 );
         }
-        return Rest::response( [], 400 );
+        return Rest::response( [], 400, "Erro ao editar atividade" );
     }
     /**
      * 
@@ -77,8 +83,11 @@ class ActivityController extends Controller
      */
     public function delete( $id )
     {
-        (new Activity)->deleteActivity( $id );
-        return Rest::response( [], 200 );
+        $deleted = (new Activity)->deleteActivity( $id );
+        if ( $deleted ) {
+            return Rest::response( [], 200, 'Atividade deletada com sucesso.' );
+        }
+        return Rest::response( [], 400, 'Erro ao deletar atividade.' );
     }
     
     

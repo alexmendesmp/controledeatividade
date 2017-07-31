@@ -6,6 +6,8 @@ use App\Models\Model;
 
 class Activity extends Model
 {
+    public static $STATE = [ 1 => 'Ativo', 0 => 'Inativo'];
+    
     protected $required = ['name','description','start_date','end_date','status','state'];
             
     protected $relations = [

@@ -221,11 +221,12 @@ class ModelLib
             $prepare = $this->db->prepare( $query );
             $prepare->execute([':id' => $id ]);
             
-            return;
+            return true;
             
         } catch ( \PDOException $ex ) {
             
-            die( $ex->getMessage() );
+            //die( $ex->getMessage() );
+            return false;
         }
         return;
     }

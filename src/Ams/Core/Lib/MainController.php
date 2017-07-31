@@ -10,6 +10,9 @@ class MainController
     protected $currentAction;
     protected $currentParams;
     
+    protected $defaultController = 'ActivityController';
+    protected $defaultAction = 'main';
+    
     public function __construct()
     {
         $this->server = $_SERVER;
@@ -38,7 +41,14 @@ class MainController
     {
         $httpMethod = $this->server['REQUEST_METHOD'];
         $routes = Route::getRouteCollection()[$httpMethod];
-        $pathInfo = $this->server['PATH_INFO'];
+        $pathInfo = isset($this->server['PATH_INFO']) ? $this->server['PATH_INFO'] : null;
+        
+        if ( ! $pathInfo ) {
+            // Home
+            $this->currentController = $this->defaultController;
+            $this->currentAction = $this->defaultAction;
+            return;
+        }
         
         foreach ( $routes as $route => $controllerAction ) {
             // ..
@@ -48,7 +58,7 @@ class MainController
             preg_match_all( $regex, str_replace('/', '\/', $route), $matches );
             
             $new = preg_replace( $regex, $replacement, str_replace('/', '\/', $route) );
-            $newRegex = "/{$new}/";
+            $newRegex = "/{$new}$/";
             
             if ( preg_match( $newRegex, $pathInfo, $matches ) > 0 ) {
                 // ..
