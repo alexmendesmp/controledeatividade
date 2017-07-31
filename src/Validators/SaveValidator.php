@@ -32,7 +32,7 @@ class SaveValidator implements Validator
                 array_push( $fieldsNotFound, $field );
             } else {
                 // Verify whether field is empty
-                if ( empty( $requestData[$field] ) ) {
+                if ( $requestData[$field] === '' ) {
                     // Required field cannot be empty
                     array_push( $fieldsNotFound, $field );
                 } else {

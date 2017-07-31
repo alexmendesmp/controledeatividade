@@ -41,7 +41,7 @@
 
                     <div class="uk-grid">
                         <div class="uk-width-1-1">
-                            <input type="text" placeholder="" class="uk-width-1-1" id="name">
+                            <input type="text" placeholder="Nome da Atividade" class="uk-width-1-1" id="name">
                         </div>
                         <div class="uk-margin uk-width-1-2">
                             <input class="uk-margin uk-width-1-1" data-uk-datepicker="{format:'DD/MM/YYYY'}" type="text" placeholder="Data de início" id='start_date'>
@@ -50,22 +50,14 @@
                             <input class="uk-margin uk-width-1-1" data-uk-datepicker="{format:'DD/MM/YYYY'}" type="text" placeholder="Data de finalização" id='end_date'>
                         </div>
                         <div class="uk-margin uk-width-1-1">
-                            <textarea class="uk-textarea uk-width-1-1" rows="5" placeholder="Textarea" id='description'></textarea>
+                            <textarea class="uk-textarea uk-width-1-1" rows="5" placeholder="Descrição" id='description'></textarea>
                         </div>
                         <div class="uk-margin uk-width-1-2">
                             <select class="uk-select uk-width-1-1" id='status'>
-<!--                                <option value="">Status...</option>
-                                <option value="1">Pendente</option>
-                                <option value="2">Em desenvolvimento</option>
-                                <option value="3">Em teste</option>
-                                <option value="4">Concluída</option>-->
                             </select>
                         </div>                            
                         <div class="uk-margin uk-width-1-2">
                             <select class="uk-select uk-width-1-1" id='state'>
-                                <option value="">Situação...</option>
-                                <option value="1">Ativa</option>
-                                <option value="0">Inativa</option>
                             </select>
                         </div>                            
 

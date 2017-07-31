@@ -63,6 +63,8 @@ jQuery(document).ready( function( $ ){
             $globals.state = 'save';
             // Do Edit
             Helper.openModal( "#modalCreateUpdate", cleanupFormData );
+            // Get status list
+            statusList();
         },
         // LIST
         activitieslist: function () {
@@ -92,57 +94,9 @@ jQuery(document).ready( function( $ ){
         $("#description").val( d['description'] );
         $("#start_date").val( d['start_date'] );
         $("#end_date").val( d['end_date'] );
-        // Temp
-        $globals.statusId = d['status']['id'];
-        $globals.stateId = d['state'];
+        d.statusId = d['status']['id'];
         
-        var statusList = ActivityService().getStatus(function( response ){
-            
-            var options = response['data'];
-            var selectStatus = $("#status");
-            $globals.itemSelected = '';
-            selectStatus.html("");
-            selectStatus.append( $("<option/>").html("Status...") );
-            // STATUS OPTIONS //
-            $.map( options, function( option ){
-                $globals.itemSelected = '';
-                // Select stored option
-                if ( parseInt($globals.statusId) == parseInt(option['id']) ) {
-                    $globals.itemSelected = 'SELECTED';
-                }
-                // Build options list
-                selectStatus.append( 
-                        $("<option "+$globals.itemSelected+" value='"+option['id']+"'></option>")
-                            .html( option['description'] )
-                        );
-            });
-            delete $globals.itemSelected;
-            delete $globals.statusId;
-            
-            // STATE OPTIONS //
-            $globals.itemSelected = '';
-            var states = [
-                { 'id': 1, 'description': 'Ativo' },
-                { 'id': 0, 'description': 'Inativo' }
-            ];
-            var selectState = $("#state");
-            selectState.html("");
-            selectState.append( $("<option/>").html("Situação...") );
-            $.map( states, function( state ){
-                $globals.itemSelected = '';
-                // Select stored option
-                if ( parseInt($globals.stateId) == parseInt(state['id']) ) {
-                    $globals.itemSelected = 'SELECTED';
-                }
-                // Build options list
-                selectState.append( 
-                        $("<option "+$globals.itemSelected+" value='"+state['id']+"'></option>")
-                            .html( state['description'] )
-                        );
-            });
-            delete $globals.itemSelected;
-            delete $globals.stateId;
-        });
+        statusList( d );
         
         // Set Current Edit ID
         $globals.currentEdit_ID = d['id'];
@@ -172,6 +126,26 @@ jQuery(document).ready( function( $ ){
         $("#state").val('');
     }
     
+        function statusList( data2 ) {
+            
+            ActivityService().getStatus(function( response ){
+                // STATUS OPTIONS //
+                var options = response['data'];
+                var selectStatus = $("#status");
+                $globals.itemSelected = '';
+                selectStatus.html("");
+                Helper.buildSelect( 'Status', 'statusId', selectStatus, options, data2 );
+
+                // STATE OPTIONS //
+                var states = [
+                    { 'id': '1', 'description': 'Ativo' },
+                    { 'id': '0', 'description': 'Inativo' }
+                ];
+                var selectState = $("#state");
+                selectState.html("");
+                Helper.buildSelect( 'Situação', 'state', selectState, states, data2 );
+            });
+        }
     
     
 });

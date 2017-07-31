@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Model;
+use App\Ams\Core\Lib\Rest;
 
 class Activity extends Model
 {
@@ -13,6 +14,7 @@ class Activity extends Model
     protected $relations = [
         'status' => [\App\Models\Status::class, 'id', 'status']
     ];
+    const FORBIDDEN_STATUS = 4;
     /**
      * 
      * @param int $id
@@ -67,5 +69,19 @@ class Activity extends Model
     public function deleteActivity( int $id ) 
     {
         return Activity::delete( $id );
+    }
+    /**
+     * Verify if it is possible to update activity.
+     * 
+     * @param int $id
+     * @return boolean
+     */
+    public function canSave( int $id ) 
+    {
+        $activity = Activity::find( $id );
+        if ( (int) $activity['status'] === (int) Activity::FORBIDDEN_STATUS ) {
+            Rest::response( [], 400, "Status Concluído. Não é possível alterar a atividade." );
+        }
+        return true;
     }
 }

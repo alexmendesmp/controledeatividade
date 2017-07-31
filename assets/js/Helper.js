@@ -59,6 +59,9 @@ var Helper = {
         });
     }, // function
     
+    /************************************************************************
+     * Open Modal
+     ***********************************************************************/    
     openModal : function( selector, callback ){
         // Show Modal
         $globals.modal = UIkit.modal( selector );
@@ -72,6 +75,36 @@ var Helper = {
                 }
             }
         });
+        
+    }, // function
+    
+    /************************************************************************
+     * Build Select
+     ***********************************************************************/    
+    buildSelect: function( label, fieldToCompare, selector, options, data ) {
+        // ..
+        $globals.SelectedInCreateMode = 'SELECTED';
+        
+        $.map( options, function( option ){
+            $globals.itemSelected = '';
+            
+            if ( data != undefined ) {
+                // Select stored option
+                if ( parseInt(data[fieldToCompare]) == parseInt(option['id']) ) {
+                    $globals.itemSelected = 'SELECTED';
+                    $globals.SelectedInCreateMode = '';
+                }
+            }
+            // Build options list
+            selector.append( 
+                    $("<option "+$globals.itemSelected+" value='"+option['id']+"'></option>")
+                        .html( option['description'] )
+                    );
+        });
+        selector.prepend( $("<option "+$globals.SelectedInCreateMode+"></option>").html( label + "...") );
+        
+        delete $globals.itemSelected;
+        delete $globals.SelectedInCreateMode;
         
     }
 }

@@ -50,6 +50,7 @@ class ActivityController extends Controller
         return;
     }
     /**
+     * Save
      * 
      * @return type
      */
@@ -63,18 +64,22 @@ class ActivityController extends Controller
         return Rest::response( [], 400, "Erro ao criar atividade" );
     }
     /**
+     * Update
      * 
      * @param type $id
      * @return
      */
     public function update( $id )
     {
+        $activity = new Activity;
+        $activity->canSave( $id );
+        
         $request = Request::getAll();
         if ( ! $request ) {
             return Rest::response( [], 400, "Erro ao editar atividade" );
         }
             
-        $updated = (new Activity)->updateActivity( $id, $request );
+        $updated = $activity->updateActivity( $id, $request );
         
         if ( $updated ) {
             return Rest::response( $updated, 200, "Atividade atualizada com sucesso." );
@@ -94,7 +99,11 @@ class ActivityController extends Controller
         }
         return Rest::response( [], 400, 'Erro ao deletar atividade.' );
     }
-    
+    /**
+     * Get status
+     * 
+     * @return
+     */
     public function getStatus()
     {
         $status = (new Status)->getStatusList();
