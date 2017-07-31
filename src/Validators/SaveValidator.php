@@ -48,6 +48,14 @@ class SaveValidator implements Validator
             }
         }
         
+        // Status Concluido.
+        // You must provide and end date for the activity
+        if ( (int) $requestData['status'] === (int) \App\Models\Activity::FORBIDDEN_STATUS ) {
+            if ( is_null( $requestData['end_date'] ) || empty( $requestData['end_date'] ) ) {
+                Rest::response( [], 400,  "Status Concluído. É necessário informar uma data de finalização da atividade" );
+            }
+        }
+        
         if ( $fieldsNotFound ) {
             // There are required fields not found in request data
             Rest::response( [], 400,  "Campos que precisam de atenção: " . join( ', ', $fieldsNotFound ) );
