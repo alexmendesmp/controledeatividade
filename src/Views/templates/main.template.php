@@ -5,6 +5,7 @@
         <title>Controle de Tarefas</title>
         <script src='assets/js/jquery-3.2.1.min.js'></script>
         <link rel='stylesheet' href="vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
+        <link rel='stylesheet' href="assets/js/uikit/css/uikit.min.css">
     </head>
     <body>
 
@@ -20,50 +21,23 @@
                   <!--Status Message (alert)-->
 
                   <table class='table' id='activityList'></table>
-                  
-                <!--
-                  <table class='table' id='activityList'>
-                      <th>#</th>
-                      <th>Nome</th>
-                      <th>Descrição</th>
-                      <th>Data de início</th>
-                      <th>Data de finalização</th>
-                      <th>Status</th>
-                      <th>Situação</th>
-                      <th>Ações</th>
-                      
-                      <div id='tdActivitylist'></div>
-                      
-                      <?php foreach ( $this->data as $activity ) : ?>
-                      <tr>
-                          <td><?php echo $activity['id'] ?></td>
-                          <td><?php echo $activity['name'] ?></td>
-                          <td><?php echo $activity['description'] ?></td>
-                          <td><?php echo $activity['start_date'] ?></td>
-                          <td><?php echo $activity['end_date'] ?></td>
-                          <td><?php echo $activity['status']['description'] ?></td>
-                          <td><?php echo App\Models\Activity::$STATE[$activity['state']] ?></td>
-                          <td>
-                      
-                            <div class="btn-group" role="group" aria-label="...">
-                                <?php $id = $activity['id'] ?>
-                                <a href="#" class='actionButton' data-type='update' data-id='<?php echo $id ?>'><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
-                                <a href="#" class='actionButton' data-type='delete' data-id='<?php echo $id ?>'><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
-                            </div>                              
-                          </td>
-                      </tr>
-                      <?php endforeach; ?>
-                      -->
-                  </table>
-                  
               </div>
             </div>              
-              
-
             
           </div>
         </div>        
+
+
+<!--MODAL-->        
+<div id="modalCreateUpdate" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+        <h2 class="uk-modal-title">Nova Atividade</h2>
+        <button class="uk-modal-close" type="button"></button>
+    </div>
+</div>
+        
         <!--scripts-->
+        <script src='assets/js/uikit/js/uikit.min.js'></script>
         <script src='assets/js/MessagesHandler.js'></script>
         <script src='assets/js/ActivityService.js'></script>
         <script src='assets/js/main.js'></script>

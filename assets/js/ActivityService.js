@@ -22,7 +22,7 @@ var ActivityService = function()
         },
         update: function( id, callBack ) {
 
-            console.log( 'update' )
+            UIkit.modal( "#modalCreateUpdate" ).show();
         }
     }
 }

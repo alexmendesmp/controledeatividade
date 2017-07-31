@@ -24,25 +24,24 @@ var messages = {
     // Success
     success: function( message ) {
 
-        var placeholder = $( "#statusMessage" );
-        placeholder.addClass( 'alert-success' );
-        placeholder.html( message );
-        placeholder.show();
-        setTimeout(function(){
-            messages.hideMessage( placeholder );
-        },3000);
+        UIkit.notification({
+            message: "<span uk-icon='icon: check'></span>" + message,
+            status: 'success',
+            pos: 'top-center',
+            timeout: 5000
+        });
         // Emit Event
         $(document).trigger( "httpResponseOk" );
 
     },
     error: function( data ) {
-        var placeholder = $( "#statusMessage" );
-        placeholder.addClass( 'alert-success' );
-        placeholder.html( message );
-        placeholder.show();
-        setTimeout(function(){
-            messages.hideMessage( placeholder );
-        }, 3000);
+
+        UIkit.notification({
+            message: "<span uk-icon='icon: close'></span>" + message,
+            status: 'danger',
+            pos: 'top-center',
+            timeout: 5000
+        });
         // Emit Event
         $(document).trigger( "httpResponseOk" );
     }

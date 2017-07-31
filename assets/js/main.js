@@ -13,21 +13,24 @@ jQuery(document).ready( function( $ ){
     });
     // Actions
     var callEvent = {
+        // DELETE
         delete: function ( id ) {
             // Do delete
-            //UIkit.modal.confirm( "Tem certeza que deseja excluir esta atividade?" );
-            ActivityService().delete( id, messages.handler );
+            UIkit.modal.confirm( "Tem certeza que deseja excluir esta atividade?")
+                    .then(function(){
+                        ActivityService().delete( id, messages.handler );
+                    }, function(){})
             // on Event
             $(document).on( 'httpResponseOk', function( event ){
                 callEvent.list();
             });
-    
-
         },
+        // UPDATE
         update: function ( id ) {
             // Do Edit
             ActivityService().update( id );
         },
+        // LIST
         list: function () {
             // ..
             ActivityService().list( buildList );
@@ -36,6 +39,7 @@ jQuery(document).ready( function( $ ){
     // Build Activity list
     var buildList = function( list ) {
         // ..
+        var state = {1: 'Ativo', 0: 'Inativo'};
         var data = list.data;
         var activityList = $("#activityList");
         activityList.html("");
@@ -59,11 +63,11 @@ jQuery(document).ready( function( $ ){
             tr.append( $("<td/>").html(item['start_date']) );
             tr.append( $("<td/>").html(item['end_date']) );
             tr.append( $("<td/>").html(item['status']['description']) );
-            tr.append( $("<td/>").html(item['state']) );
+            tr.append( $("<td/>").html(state[item['state']]) );
             tr.append( 
                     $("<td/>").append( 
                         $("<div/>", { 'class':'btn-group', 'role': 'group' })
-                            .append( $("<a/>", {'href':'#', 'class':'actionButton', 'data-type': 'delete', 'data-id': item['id']} )
+                            .append( $("<a/>", {'href':'#', 'class':'actionButton', 'data-type': 'update', 'data-id': item['id']} )
                                 .append( $("<span/>", {'class': 'glyphicon glyphicon-pencil', 'aria-hidden': 'true'} ))
                             )
                             .append( $("<a/>", {'href':'#', 'class':'actionButton', 'data-type': 'delete', 'data-id': item['id']} )
