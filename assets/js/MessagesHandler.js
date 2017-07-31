@@ -8,6 +8,11 @@ var messages = {
         if ( data['error'] != undefined ) {
             // Error
             messages.showMessage( 'error', data['message'] );
+            
+        } else if ( data['responseJSON'] != undefined ) {
+            // Error
+            messages.showMessage( 'error', data['responseJSON']['message'] );
+            
         } else {
             // Success
             messages.showMessage( 'success', data['message'] );
@@ -33,9 +38,13 @@ var messages = {
         });
         // Emit Event
         $(document).trigger( "httpResponseOk" );
+        // Hide Modal if it exists
+        if ( $globals.modal ) {
+            $globals.modal.hide();
+        }
 
     },
-    error: function( data ) {
+    error: function( message ) {
 
 //        UIkit.notification({
         UIkit.notify({
@@ -44,7 +53,6 @@ var messages = {
             pos: 'top-center',
             timeout: 3000
         });
-        // Emit Event
-        $(document).trigger( "httpResponseOk" );
+        return false;
     }
 }

@@ -41,7 +41,7 @@
 
                     <div class="uk-grid">
                         <div class="uk-width-1-1">
-                            <input type="text" placeholder="" class="uk-width-1-1" id="name">
+                            <input type="text" placeholder="" class="uk-width-1-1" id="name" required>
                         </div>
                         <div class="uk-margin uk-width-1-2">
                             <input class="uk-margin uk-width-1-1" data-uk-datepicker="{format:'YYYY-MM-DD'}" type="text" placeholder="Data de início" id='start_date'>
@@ -74,7 +74,7 @@
                 </form>                
                 <p class="uk-text-right">
                     <button class="uk-button uk-button-default uk-modal-close" type="button">Cancelar</button>
-                    <button class="uk-button uk-button-primary actionButton" data-type="update" type="button">Salvar</button>
+                    <button class="uk-button uk-button-primary actionButton" data-type="save" type="button">Salvar</button>
                 </p>
             </div>
             

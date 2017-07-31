@@ -8,7 +8,7 @@ class Activity extends Model
 {
     public static $STATE = [ 1 => 'Ativo', 0 => 'Inativo'];
     
-    protected $required = ['name','description','start_date','end_date','status','state'];
+    protected $required = ['name'=>'max:255','description'=>'max:600','start_date','status','state'];
             
     protected $relations = [
         'status' => [\App\Models\Status::class, 'id', 'status']

@@ -28,6 +28,7 @@ class Rest
             $response['error'] = true;
         }
         echo static::parseData( $response );
+        exit;
         
     }
     /**

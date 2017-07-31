@@ -57,9 +57,9 @@ class ActivityController extends Controller
         $request = Request::getAll();
         $saved = (new Activity)->saveActivity( $request );
         if ( $saved ) {
-            return Rest::response( $saved, 201 );
+            return Rest::response( $saved, 201, "Atividade criada com sucesso." );
         }
-        return Rest::response( [], 400 );
+        return Rest::response( [], 400, "Erro ao criar atividade" );
     }
     /**
      * 
@@ -69,10 +69,14 @@ class ActivityController extends Controller
     public function update( $id )
     {
         $request = Request::getAll();
+        if ( ! $request ) {
+            return Rest::response( [], 400, "Erro ao editar atividade" );
+        }
+            
         $updated = (new Activity)->updateActivity( $id, $request );
         
         if ( $updated ) {
-            return Rest::response( $updated, 200 );
+            return Rest::response( $updated, 200, "Atividade atualizada com sucesso." );
         }
         return Rest::response( [], 400, "Erro ao editar atividade" );
     }

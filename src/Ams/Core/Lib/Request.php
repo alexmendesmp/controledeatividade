@@ -6,7 +6,7 @@ class Request
 {
     protected static $requestData;
     
-    public function getAll() : array
+    public function getAll()
     {
         return self::$requestData;
     }
@@ -14,6 +14,13 @@ class Request
     public function getPostData()
     {
         $raw = file_get_contents( "php://input" );
-        self::$requestData = json_decode( $raw, true );
+        if (  $json = json_decode( $raw, true ) ) {
+            
+            self::$requestData = $json;
+            return true;
+        }
+        self::$requestData = [];
+        return false;
+        
     }
 }

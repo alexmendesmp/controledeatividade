@@ -3,6 +3,7 @@
 namespace App\Validators;
 
 use App\Ams\Core\Lib\Validator;
+use App\Ams\Core\Lib\Rest;
 
 class SaveValidator implements Validator
 {
@@ -19,17 +20,37 @@ class SaveValidator implements Validator
         // Fields not found
         $fieldsNotFound = [];
         // Iterate
-        foreach ( $requiredFields as $field ) {
+        foreach ( $requiredFields as $key => $field ) {
             // ..
+            if ( is_string($key) ) {
+                // Ex: array( 'name'=>'max:255' )
+                $rule = $field;
+                $field = $key;
+            }
             if ( ! array_key_exists( $field, $requestData ) ) {
                 // ..
                 array_push( $fieldsNotFound, $field );
+            } else {
+                // Verify whether field is empty
+                if ( empty( $requestData[$field] ) ) {
+                    // Required field cannot be empty
+                    array_push( $fieldsNotFound, $field );
+                } else {
+                    // if field has rules
+                    if (  $rule ) {
+                        // Apply rules!
+                        $maxlen = (int) explode(':', $rule)[1];
+                        if ( strlen( $field ) > $maxlen ) {
+                            array_push( $fieldsNotFound, $field );
+                        }
+                    }
+                }
             }
         }
         
         if ( $fieldsNotFound ) {
             // There are required fields not found in request data
-            throw new \Exception( "Campos Requeridos: " . join( ', ', $fieldsNotFound ) );
+            Rest::response( [], 400,  "Campos que precisam de atenção: " . join( ', ', $fieldsNotFound ) );
         }
         return $requestData;
     }

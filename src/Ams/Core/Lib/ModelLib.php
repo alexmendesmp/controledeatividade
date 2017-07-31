@@ -167,7 +167,7 @@ class ModelLib
                 ':name'         => $postData['name'],
                 ':description'  => $postData['description'],
                 ':start_date'   => $postData['start_date'],
-                ':end_date'     => $postData['end_date'],
+                ':end_date'     => ( ! empty( $postData['end_date'] ) ) ? $postData['end_date'] : null,
                 ':status'       => $postData['status'],
                 ':state'        => $postData['state']
             ]);
@@ -201,7 +201,7 @@ class ModelLib
                 ':name'         => $postData['name'],
                 ':description'  => $postData['description'],
                 ':start_date'   => $postData['start_date'],
-                ':end_date'     => $postData['end_date'],
+                ':end_date'     => ( ! empty( $postData['end_date'] ) ) ? $postData['end_date'] : null,
                 ':status'       => $postData['status'],
                 ':state'        => $postData['state']
             ]);
@@ -210,7 +210,8 @@ class ModelLib
             
         } catch ( \PDOException $ex ) {
             
-            die( $ex->getMessage() );
+//            die( $ex->getMessage() );
+            return false;
         }
         return;
     }

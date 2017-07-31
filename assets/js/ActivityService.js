@@ -18,13 +18,17 @@ var ActivityService = function()
         },
         save: function( data, callBack ) {
 
-            HttpService(data).request( 'activity/' + id, 'PUT', callBack );
+            HttpService(data).request( 'activity', 'POST', callBack );
         },
         update: function( data, id, callBack ) {
             
             HttpService(data).request( 'activity/' + id, 'PUT', callBack );
         },
         edit: function( id, callBack ) {
+
+            HttpService().request( 'activity/' + id, 'GET', callBack );
+        },
+        getStatus: function( id, callBack ) {
 
             HttpService().request( 'activity/' + id, 'GET', callBack );
         }
@@ -35,13 +39,14 @@ var ActivityService = function()
 var HttpService = function( data ) 
 {
     // validate data content
-    data = ( data === 'undefined' ) ? null : data;
+    data = ( data === 'undefined' ) ? null : JSON.stringify( data );
     return {
         request: function( service, httpMethod, callBack ) {
             // Request
             $.ajax({
                 url: 'index.php/' + service,
                 data: data,
+                contentType: 'raw',
                 dataType: 'json',
                 method: httpMethod,
                 success: function( result ) {
@@ -49,6 +54,14 @@ var HttpService = function( data )
                     if ( $.isFunction( callBack ) ) {
                         // Execute callback function
                         callBack( result );
+                    }
+                },
+                statusCode: {
+                    400: function( result ){
+                        if ( $.isFunction( callBack ) ) {
+                            // Execute callback function
+                            callBack( result );
+                        }
                     }
                 }
             });
