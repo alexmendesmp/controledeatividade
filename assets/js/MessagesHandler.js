@@ -24,11 +24,12 @@ var messages = {
     // Success
     success: function( message ) {
 
-        UIkit.notification({
+//        UIkit.notification({
+        UIkit.notify({
             message: "<span uk-icon='icon: check'></span>" + message,
             status: 'success',
             pos: 'top-center',
-            timeout: 5000
+            timeout: 3000
         });
         // Emit Event
         $(document).trigger( "httpResponseOk" );
@@ -36,11 +37,12 @@ var messages = {
     },
     error: function( data ) {
 
-        UIkit.notification({
+//        UIkit.notification({
+        UIkit.notify({
             message: "<span uk-icon='icon: close'></span>" + message,
             status: 'danger',
             pos: 'top-center',
-            timeout: 5000
+            timeout: 3000
         });
         // Emit Event
         $(document).trigger( "httpResponseOk" );

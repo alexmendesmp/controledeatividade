@@ -23,7 +23,7 @@ class Activity extends Model
     {
         return Activity::with(['status'])
                 ->where([ 'id', '=', $id ])
-                ->execute();
+                ->first();
     }
     /**
      * 

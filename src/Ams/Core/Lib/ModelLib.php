@@ -103,12 +103,16 @@ class ModelLib
         
         return $result;
     }
+    public function first()
+    {
+        return $this->execute( "LIMIT 1", true );
+    }
     /**
      * Execute 'QueryBuilder'
      * 
      * @return type
      */
-    public function execute()
+    public function execute( string $param = "", $first = false )
     {
         $fields = '*';
         if ( $this->select ) {
@@ -122,7 +126,7 @@ class ModelLib
             foreach ( $wheres as $where ) {
                 // ..
                 $conditions .= "{$logical} {$where[0]} {$where[1]} :{$where[0]}";
-                $query = "SELECT {$fields} FROM {$this->table} WHERE 1 {$conditions}";
+                $query = "SELECT {$fields} FROM {$this->table} WHERE 1 {$conditions} $param";
 
                 $prepare = $this->db->prepare( $query );
                 $prepare->bindValue( ":$where[0]", $where[2] );
@@ -131,7 +135,9 @@ class ModelLib
         
         $prepare->execute();
         // Fetch result
-        $result = $prepare->fetchAll( \PDO::FETCH_ASSOC );
+        if ( $first ) $result = $prepare->fetch( \PDO::FETCH_ASSOC );
+            else $result = $prepare->fetchAll( \PDO::FETCH_ASSOC );
+        
         if ( ! $result ) 
             return;
         

@@ -1,8 +1,13 @@
 
+var  $globals = {};
+
+
 jQuery(document).ready( function( $ ){
 
     "use strict";
     
+    $globals.state = 'save';
+        
     // Event Click Handler
     $( document ).on( "click", 'a.actionButton', function( event )
     {
@@ -16,10 +21,10 @@ jQuery(document).ready( function( $ ){
         // DELETE
         delete: function ( id ) {
             // Do delete
-            UIkit.modal.confirm( "Tem certeza que deseja excluir esta atividade?")
-                    .then(function(){
-                        ActivityService().delete( id, messages.handler );
-                    }, function(){})
+            UIkit.modal.confirm( "Tem certeza que deseja excluir esta atividade?", 
+            function(){
+                    ActivityService().delete( id, messages.handler );
+            });
             // on Event
             $(document).on( 'httpResponseOk', function( event ){
                 callEvent.list();
@@ -27,8 +32,15 @@ jQuery(document).ready( function( $ ){
         },
         // UPDATE
         update: function ( id ) {
-            // Do Edit
+            // Do Update
             ActivityService().update( id );
+        },
+        // Enter Edit 
+        edit: function ( id ) {
+            // Set Activity STATE
+            $globals.state = 'update';
+            // Do Edit
+            ActivityService().edit( id, bindFormData );
         },
         // LIST
         list: function () {
@@ -36,51 +48,19 @@ jQuery(document).ready( function( $ ){
             ActivityService().list( buildList );
         }
     };
-    // Build Activity list
-    var buildList = function( list ) {
-        // ..
-        var state = {1: 'Ativo', 0: 'Inativo'};
-        var data = list.data;
-        var activityList = $("#activityList");
-        activityList.html("");
-
-        var table = $("<tbody/>");
-        table.append($("<th/>").html("#"));
-        table.append($("<th/>").html("Nome"));
-        table.append($("<th/>").html("Descrição"));
-        table.append($("<th/>").html("Data de início"));
-        table.append($("<th/>").html("Data de finalização"));
-        table.append($("<th/>").html("Status"));
-        table.append($("<th/>").html("Situação"));
-        table.append($("<th/>").html("Ação"));
-        
-        $.map( data, function( item ){
-            // create element
-            var tr = $("<tr/>");
-            tr.append( $("<td/>").html(item['id']) );
-            tr.append( $("<td/>").html(item['name']) );
-            tr.append( $("<td/>").html(item['description']) );
-            tr.append( $("<td/>").html(item['start_date']) );
-            tr.append( $("<td/>").html(item['end_date']) );
-            tr.append( $("<td/>").html(item['status']['description']) );
-            tr.append( $("<td/>").html(state[item['state']]) );
-            tr.append( 
-                    $("<td/>").append( 
-                        $("<div/>", { 'class':'btn-group', 'role': 'group' })
-                            .append( $("<a/>", {'href':'#', 'class':'actionButton', 'data-type': 'update', 'data-id': item['id']} )
-                                .append( $("<span/>", {'class': 'glyphicon glyphicon-pencil', 'aria-hidden': 'true'} ))
-                            )
-                            .append( $("<a/>", {'href':'#', 'class':'actionButton', 'data-type': 'delete', 'data-id': item['id']} )
-                                .append( $("<span/>", {'class': 'glyphicon glyphicon-trash', 'aria-hidden': 'true'} ))
-                            )
-                    ) 
-            );
-            table.append(tr);
-            activityList.append( table )
-        });
-    }
     // Call List
     callEvent.list();
+    
+    // One Way bind.
+    var bindFormData = function ( data ) {
+        // ..
+        var d = data['data'];
+        $("#name").val( d['name'] );
+        $("#description").val( d['description'] );
+        $("#start_date").val( d['start_date'] );
+        $("#end_date").val( d['end_date'] );
+        UIkit.modal( "#modalCreateUpdate" ).show();
+    }
     
     
 });

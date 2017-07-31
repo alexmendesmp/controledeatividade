@@ -16,13 +16,17 @@ var ActivityService = function()
 
             HttpService().request( 'activity', 'GET', callBack )
         },
-        save: function() {
+        save: function( data, callBack ) {
 
-            console.log( 'save' )
+            HttpService(data).request( 'activity/' + id, 'PUT', callBack );
         },
-        update: function( id, callBack ) {
+        update: function( data, id, callBack ) {
+            
+            HttpService(data).request( 'activity/' + id, 'PUT', callBack );
+        },
+        edit: function( id, callBack ) {
 
-            UIkit.modal( "#modalCreateUpdate" ).show();
+            HttpService().request( 'activity/' + id, 'GET', callBack );
         }
     }
 }
