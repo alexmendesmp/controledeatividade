@@ -22,6 +22,27 @@
                   <p><button class='btn btn-primary actionButton' data-type='create'>Nova atividade</button></p>
                   <!--Status Message (alert)-->
 
+                    <!--FILTERS-->
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                                <form class="uk-form" role="search">
+                                <div class="form-group">
+
+                                    <select class="uk-select uk-width-1-4" id='statusFilter'>
+                                    </select>
+                                    <select class="uk-select uk-width-1-4" id='stateFilter'>
+                                    </select>
+                                    <button type="button" data-type='filter' class="btn btn-default actionButton" class="uk-select uk-width-1-4">
+                                        Filtrar
+                                    </button>
+
+                                </div>
+                                
+                                </form>
+                        </div>
+                    </div>
+                    <!--FILTERS-->
+
                   <table class='table' id='activityList'></table>
               </div>
             </div>              

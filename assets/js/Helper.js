@@ -106,5 +106,32 @@ var Helper = {
         delete $globals.itemSelected;
         delete $globals.SelectedInCreateMode;
         
+    },
+    /************************************************************************
+     * Filter
+     ***********************************************************************/    
+    filter: {
+        // ..
+        getStatusList: function() {
+            // ..
+            ActivityService().getStatus(function( response ){
+                // STATUS OPTIONS //
+                var options = response['data'];
+                var selectStatus = $("#statusFilter");
+                $globals.itemSelected = '';
+                selectStatus.html("");
+                Helper.buildSelect( 'Status', 'statusId', selectStatus, options, null );            
+            });
+        },
+        getStateList: function() {
+            // STATE OPTIONS //
+            var states = [
+                { 'id': '1', 'description': 'Ativo' },
+                { 'id': '0', 'description': 'Inativo' }
+            ];
+            var selectState = $("#stateFilter");
+            selectState.html("");
+            Helper.buildSelect( 'Situação', 'state', selectState, states, null );
+        }
     }
 }

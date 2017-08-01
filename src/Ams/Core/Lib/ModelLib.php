@@ -126,7 +126,7 @@ class ModelLib
             // ..
             foreach ( $wheres as $where ) {
                 // ..
-                $conditions .= "{$logical} {$where[0]} {$where[1]} :{$where[0]}";
+                $conditions .= " {$logical} {$where[0]} {$where[1]} :{$where[0]}";
                 $arrayBindConditions = array_merge( $arrayBindConditions, [":$where[0]" => $where[2]] );
             }
         }
@@ -280,10 +280,10 @@ class ModelLib
         if ( isset( $this->where['AND'] ) ) {
             // ..
             $this->where['AND'] = array_merge( $this->where['AND'], [$param] );
+            return $this;
         }
         
         $this->where = array_merge( $this->where, ['AND' => [$param]] );
-        
         return $this;
     }
     /**

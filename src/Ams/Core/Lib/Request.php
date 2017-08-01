@@ -23,4 +23,23 @@ class Request
         return false;
         
     }
+
+    public static function input( string $input = null ) 
+    {
+        $allInputs = [];
+
+        if ( is_null( $input ) ) {
+            // .. return all input from GET
+            foreach ( $_GET as $index => $value ) {
+                // ..
+                $in = filter_input( INPUT_GET, $index );
+                $allInputs = array_merge( $allInputs, [$index => $in] );
+            }
+            return $allInputs;
+
+        } else {
+            // Get only specific input
+            return filter_input( INPUT_GET, $input );
+        }
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Model;
 use App\Ams\Core\Lib\Rest;
+use App\Ams\Core\Lib\Request;
 
 class Activity extends Model
 {
@@ -35,9 +36,19 @@ class Activity extends Model
      */
     public function getActivityList()
     {
-        return Activity::with(['status'])
-                ->select( "*, DATE_FORMAT(start_date, '%d/%m/%Y') as start_date, DATE_FORMAT(end_date, '%d/%m/%Y') as end_date" )
-                ->execute();
+        $status = Request::input('status');
+        $state = Request::input('state');
+
+        Activity::with(['status']);
+        Activity::select( "*, DATE_FORMAT(start_date, '%d/%m/%Y') as start_date, DATE_FORMAT(end_date, '%d/%m/%Y') as end_date" );
+        
+        if ( isset( $status ) && ! is_null( $status ) && $status !== '' ) 
+            Activity::where([ 'status', '=', $status ]);
+
+        if ( isset( $state ) && ! is_null( $state ) && $state !== '' ) 
+            Activity::where([ 'state', '=', $state ]);
+        
+        return Activity::execute();
     }
     /**
      * Save an Activity

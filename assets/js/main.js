@@ -10,6 +10,10 @@ jQuery(document).ready( function( $ ){
     $globals.isActivityDone = false;
     $globals.currentEdit_ID = undefined;
     $globals.modal = undefined;
+
+    // Dropdown Filter's list
+    Helper.filter.getStateList();
+    Helper.filter.getStatusList();
         
     // Event Click Handler
     $( document ).on( "click", '.actionButton', function( event )
@@ -21,6 +25,14 @@ jQuery(document).ready( function( $ ){
     });
     // Actions
     var callEvent = {
+        // FILTER
+        filter: function() {
+            // ..
+            var $status = $( "#statusFilter option:checked" ).val();
+            var $state = $( "#stateFilter option:checked" ).val();
+            // Call
+            ActivityService().list( {status:$status, state:$state}, Helper.buildActivitiesList );
+        },
         // DELETE
         delete: function ( id ) {
             // Do delete
@@ -69,7 +81,7 @@ jQuery(document).ready( function( $ ){
         // LIST
         activitieslist: function () {
             // ..
-            ActivityService().list( Helper.buildActivitiesList );
+            ActivityService().list( null, Helper.buildActivitiesList );
         },
         // LIST
         getStatus: function () {

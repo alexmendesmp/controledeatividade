@@ -12,9 +12,9 @@ var ActivityService = function()
 
             console.log( 'get' )
         },
-        list: function( callBack ) {
-
-            HttpService().request( 'activity', 'GET', callBack )
+        list: function( data, callBack ) {
+            data = ( data === 'undefined' ) ? null : data;
+            HttpService( data ).request( 'activity', 'GET', callBack )
         },
         save: function( data, callBack ) {
 
@@ -38,11 +38,12 @@ var ActivityService = function()
 // AJAX
 var HttpService = function( data ) 
 {
-    // validate data content
-    data = ( data === 'undefined' ) ? null : JSON.stringify( data );
     var response;
     return {
         request: function( service, httpMethod, callBack ) {
+            // validate data content
+            if ( httpMethod != 'GET' )
+                data = ( data === 'undefined' ) ? null : JSON.stringify( data );
             // Request
             $.ajax({
                 url: 'index.php/' + service,
