@@ -184,7 +184,8 @@ class ModelLib
             }
         } catch ( \PDOException $ex ) {
             
-            die( $ex->getMessage() );
+            //die( $ex->getMessage() );
+            return false;
         }
         return;
     }
