@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `controledeatividade`.`activity` (
   `start_date` DATE NOT NULL,
   `end_date` DATE NULL,
   `status` INT UNSIGNED NULL,
-  `state` TINYINT NULL DEFAULT 1,
+  `state` TINYINT(1) NULL DEFAULT 1,
   PRIMARY KEY (`id`),
   INDEX `status_idx` (`status` ASC),
   CONSTRAINT `status`
