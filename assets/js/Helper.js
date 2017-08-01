@@ -101,7 +101,7 @@ var Helper = {
                         .html( option['description'] )
                     );
         });
-        selector.prepend( $("<option "+$globals.SelectedInCreateMode+"></option>").html( label + "...") );
+        selector.prepend( $("<option "+$globals.SelectedInCreateMode+" value=''></option>").html( label + "...") );
         
         delete $globals.itemSelected;
         delete $globals.SelectedInCreateMode;
